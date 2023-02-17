@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-busybox
+  name: nginx-busybox
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: nginx-busybox
+  template:
+    metadata:
+      labels:
+        app: nginx-busybox
+    spec:
+      initContainers:
+        - image: "busybox:latest"
+          imagePullPolicy: "IfNotPresent"
+          name: busybox
+          command: ['sh', '-c', "until nslookup nginx-busybox-svc.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+      containers:
+        - image: nginx:1.19.1
+          # Проверка запуска сервиса
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 30
+            periodSeconds: 10
+          ports: 
+            - containerPort: 80
+              name: web
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          name: nginx
+      dnsPolicy: ClusterFirst
