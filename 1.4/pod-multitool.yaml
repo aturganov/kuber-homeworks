@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multitool-test
+spec:
+  containers:
+    # - image: pragma/network-multitool:alpine-extra
+    - image: wbitt/network-multitool
+      imagePullPolicy: IfNotPresent
+      name: network-multitool-test
