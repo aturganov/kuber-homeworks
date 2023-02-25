@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: multitool
+  name: multitool
+  namespace: default
+spec:
+  selector:
+    matchLabels: 
+      app: multitool
+  template:
+    metadata:
+      labels:
+        app: multitool
+    spec:
+      containers:
+        - image: wbitt/network-multitool
+          imagePullPolicy: IfNotPresent
+          name: multitool
+          ports: 
+            - containerPort: 80
+              name: multitool-port
+              protocol: TCP
+          volumeMounts:
+          - name: vol
+            mountPath: /messages
+            readOnly: true
+      volumes:
+        - name: vol      
+          hostPath:
+            path: /var/log/syslog
+          
+# kubectl exec multitool-59b96fd46b-s56xg -c busybox -it -- sh 
+# kubectl exec multitool-l7rbj -c multitool -it -- sh 
+# kubectl exec multitool-l7rbj -c multitool-port -it -- tail messages 
+
+

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: multitool-busybox
+  name: multitool-busybox
+  namespace: default
+spec:
+  # replicas: 1
+  selector:
+    matchLabels: 
+      app: multitool-busybox
+  template:
+    metadata:
+      labels:
+        app: multitool-busybox
+    spec:
+      containers:
+        - image: wbitt/network-multitool
+          imagePullPolicy: IfNotPresent
+          name: multitool
+          ports: 
+            - containerPort: 80
+              name: multitool-port
+              protocol: TCP
+          # env:
+          #   - value: "8080"
+          #     name: HTTP_PORT 
+          volumeMounts:
+          - name: vol
+            mountPath: /input
+        - image: busybox
+          name: busybox
+          # command: ["sleep", "3600"]
+          command: ['sh','-c', 'while sleep 5; do echo Success! >> /output/log.txt; done']
+          volumeMounts:
+          - name: vol
+            mountPath: /output
+      volumes:
+        - name: vol      
+          hostPath:
+            path: /var/data
+          
+# kubectl exec multitool-busybox-59b96fd46b-s56xg -c busybox -it -- sh 
+
+# kubectl exec multitool-busybox-59b96fd46b-s56xg -c multitool -it -- sh 
