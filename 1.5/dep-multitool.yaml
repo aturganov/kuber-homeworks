@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend
+  name: backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - image: wbitt/network-multitool
+          imagePullPolicy: IfNotPresent
+          name: backend
+          ports: 
+            - containerPort: 80
+              name: mt
+              protocol: TCP
+          # env:
+          #   - value: "8080"
+          #     name: HTTP_PORT 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  backend-svc
+  namespace: default
+spec:
+  ports:
+    - name: backend
+      port: 80
+      # targetPort: 8080 
+  selector:
+    app: backend
+  type: ClusterIP 
