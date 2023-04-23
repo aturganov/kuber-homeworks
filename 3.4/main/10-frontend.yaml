@@ -2,18 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: cache
-  name: cache
-  namespace: app
+    app: frontend
+  name: frontend
+  namespace: default
+  # namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cache
+      app: frontend
   template:
     metadata:
       labels:
-        app: cache
+        app: frontend
     spec:
       containers:
         - image: praqma/network-multitool:alpine-extra
@@ -25,7 +26,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cache-svc
+  name: frontend-svc
   namespace: default
   # namespace: app
 spec:
@@ -33,5 +34,5 @@ spec:
     - name: web
       port: 80
   selector:
-    app: cache
-  type: ClusterIP
+    app: frontend
+  type: ClusterIP 

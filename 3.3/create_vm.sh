@@ -21,7 +21,7 @@ END
   eval "$YC"
 }
 
-# create_vm "master1"
-# create_vm "worker1"
-# create_vm "worker2"
-# create_vm "worker3"
+create_vm "ks-master1"
+create_vm "ks-worker1"
+create_vm "ks-worker2"
+create_vm "ks-worker3"

@@ -21,6 +21,7 @@ END
   eval "$YC"
 }
 
-create_vm "master1"
-create_vm "worker1"
-create_vm "worker2"
+create_vm "ks_master1"
+create_vm "ks_worker1"
+create_vm "ks_worker2"
+create_vm "ks_worker3"

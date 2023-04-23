@@ -4,7 +4,8 @@ metadata:
   labels:
     app: cache
   name: cache
-  namespace: app
+  namespace: default
+  # namespace: app
 spec:
   replicas: 1
   selector:
