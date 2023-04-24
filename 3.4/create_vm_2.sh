@@ -24,4 +24,3 @@ END
 create_vm "m"
 create_vm "w1"
 create_vm "w2"
-create_vm "w3"
